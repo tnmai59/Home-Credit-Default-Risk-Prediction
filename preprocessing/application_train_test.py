@@ -18,7 +18,8 @@ def train_test_pipeline(path, num_rows = None):
     test_encode['SK_ID_CURR'] = test['SK_ID_CURR']
     train = train_encode
     test = test_encode
-    df = train.append(test)
+    # df = train.append(test)
+    df = pd.concat([train, test]).reset_index(drop=True)
     del train, test; gc.collect()
 
     # Data cleaning, replace all the invalid day by np.nan
@@ -45,7 +46,7 @@ def train_test_pipeline(path, num_rows = None):
     df['EXT_SOURCES_WEIGHTED_AVG'] =  (df['EXT_SOURCE_1']*2 + df['EXT_SOURCE_2'] + df['EXT_SOURCE_3']*3)/3 # bổ sung
 
     # Ignore warnings related to encountering NaN values during calculations
-    np.warnings.filterwarnings('ignore', r'All-NaN (slice|axis) encountered')
+    warnings.filterwarnings('ignore', r'All-NaN (slice|axis) encountered')
     # Iterate through different aggregation functions ('min', 'max', 'mean', 'median', 'var')
     for function_name in ['min', 'max', 'mean', 'median', 'var']:
         # Construct feature names based on the aggregation function applied

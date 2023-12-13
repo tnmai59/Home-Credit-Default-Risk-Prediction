@@ -24,8 +24,9 @@ def bureau_pipeline(path, num_rows= None):
     #--------------------------------------------------------------------
     # One-hot encoder
     bureau, categorical_cols = one_hot_encoder(bureau, nan_as_category= False)
-    # Join bureau balance features
+    # Join with bureau balance features
     bureau = bureau.merge(bureau_balance_pipeline(path, num_rows), how='left', on='SK_ID_BUREAU')
+
     # Flag months with late payments (days past due)
     bureau['STATUS_12345'] = 0
     for i in range(1,6):
