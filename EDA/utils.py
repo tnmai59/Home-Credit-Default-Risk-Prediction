@@ -103,7 +103,9 @@ class StatisticAnalysis:
 
         # Create a bar plot showing the percentage of missing values per column
         plt.figure(figsize=(width, height))
-        sns.barplot(x=null_df['null_percentage'], y=null_df['feature'], palette='coolwarm')
+        custom_palette = sns.color_palette("Reds", len(null_df))
+        sns.barplot(x=null_df['null_percentage'], y=null_df['feature'], palette=custom_palette, saturation=1,
+                    order=null_df['feature'])
         plt.title('Null percentage per column', fontsize=20)
         plt.show()
 
@@ -237,6 +239,13 @@ class BivariateAnalysis:
       plt.title("Box-Plot of {}".format(y))
       plt.show()
 
+    def box_plot2(self, x=str, y=None, df1=pd.DataFrame,df2=pd.DataFrame,
+                 width=12, height=6):
+        fig, (ax1, ax2) = plt.subplots(1,2, figsize= (width,height))
+        sns.boxplot(data= df1, x=x, y=y, ax= ax1, color='red').set(title = "Non-defaulter")
+        sns.boxplot(data= df2, x=x, y=y, ax= ax2, color='grey').set(title = "Defaulter")
+        plt.show()
+
     def pie_plot(self, x=str, y=None, df1=pd.DataFrame,df2=pd.DataFrame,
                  width=12, height=6):
         '''
@@ -271,7 +280,7 @@ class BivariateAnalysis:
         - df: DataFrame, the input data.
         - col_name: str, the column for which to calculate the percentage.
         '''
-        
+
         summary = []
         for cat in df[col_name].unique():
             default_count = df[(df[col_name] == cat) & (df.TARGET == 1)].shape[0]
@@ -286,4 +295,138 @@ class BivariateAnalysis:
         report_df.sort_values(by='Percentage_Of_Default', ascending=False, inplace=True)
 
         sns.barplot(report_df, x='Percentage_Of_Default', y='Categories', palette='coolwarm')
+        plt.title(col_name)
         plt.show()
+
+def one_hot_encoder(df, categorical_columns=None, nan_as_category=True):
+    """Create a new column for each categorical value in categorical columns. """
+    original_columns = list(df.columns)
+    if not categorical_columns:
+        categorical_columns = [col for col in df.columns if df[col].dtype == 'object']
+    df = pd.get_dummies(df, columns=categorical_columns, dummy_na=nan_as_category)
+    categorical_columns = [c for c in df.columns if c not in original_columns]
+    return df, categorical_columns
+
+def do_sum(df, group_cols, counted, agg_name):
+    gp = df[group_cols + [counted]].groupby(group_cols)[counted].sum().reset_index().rename(
+        columns={counted: agg_name})
+    df = df.merge(gp, on=group_cols, how='left')
+    del gp
+    return df
+
+def plot_categorical_variables_bar(data, column_name, figsize = (18,6), percentage_display = True, plot_defaulter = True, rotation = 0, 
+                                   horizontal_adjust = 0, fontsize_percent = 'xx-small', color=list):
+    '''
+    Function to plot Categorical Variables Bar Plots
+
+    Inputs:
+        data: DataFrame
+            The DataFrame from which to plot
+        column_name: str
+            Column's name whose distribution is to be plotted
+        figsize: tuple, default = (18,6)
+            Size of the figure to be plotted
+        percentage_display: bool, default = True
+            Whether to display the percentages on top of Bars in Bar-Plot
+        plot_defaulter: bool
+            Whether to plot the Bar Plots for Defaulters or not
+        rotation: int, default = 0
+            Degree of rotation for x-tick labels
+        horizontal_adjust: int, default = 0
+            Horizontal adjustment parameter for percentages displayed on the top of Bars of Bar-Plot
+        fontsize_percent: str, default = 'xx-small'
+            Fontsize for percentage Display
+
+    '''
+    print(f"Total Number of unique categories of {column_name} = {len(data[column_name].unique())}")
+
+    plt.figure(figsize = figsize, tight_layout = False)
+    sns.set(style = 'whitegrid', font_scale = 1.2)
+
+    #plotting overall distribution of category
+    plt.subplot(1,2,1)
+    data_to_plot = data[column_name].value_counts().sort_values(ascending = False)
+    ax = sns.barplot(x = data_to_plot.index, y = data_to_plot, palette = color)
+
+    if percentage_display:
+        total_datapoints = len(data[column_name].dropna())
+        for p in ax.patches:
+            ax.text(p.get_x() + horizontal_adjust, p.get_height() + 0.005 * total_datapoints, '{:1.02f}%'.format(p.get_height() * 100 / total_datapoints), fontsize = fontsize_percent)
+
+    plt.xlabel(column_name, labelpad = 10)
+    plt.title(f'Distribution of {column_name}', pad = 20)
+    plt.xticks(rotation = rotation)
+    plt.ylabel('Counts')
+
+    #plotting distribution of category for Defaulters
+    if plot_defaulter:
+        percentage_defaulter_per_category = (data[column_name][data.TARGET == 1].value_counts() * 100 / data[column_name].value_counts()).dropna().sort_values(ascending = False)
+
+        plt.subplot(1,2,2)
+        sns.barplot(x = percentage_defaulter_per_category.index, y = percentage_defaulter_per_category, palette = color)
+        plt.ylabel('Percentage of Defaulter per category')
+        plt.xlabel(column_name, labelpad = 10)
+        plt.xticks(rotation = rotation)
+        plt.title(f'Percentage of Defaulters for each category of {column_name}', pad = 20)
+    plt.show()
+
+def plot_continuous_variables(data, column_name, plots = ['distplot', 'countplot', 'box'], scale_limits = None, figsize = (20,8), histogram = True, log_scale = False):
+    '''
+    Function to plot continuous variables distribution
+
+    Inputs:
+        data: DataFrame
+            The DataFrame from which to plot.
+        column_name: str
+            Column's name whose distribution is to be plotted.
+        plots: list, default = ['distplot', 'CDF', box', 'violin']
+            List of plots to plot for Continuous Variable.
+        scale_limits: tuple (left, right), default = None
+            To control the limits of values to be plotted in case of outliers.
+        figsize: tuple, default = (20,8)
+            Size of the figure to be plotted.
+        histogram: bool, default = True
+            Whether to plot histogram along with distplot or not.
+        log_scale: bool, default = False
+            Whether to use log-scale for variables with outlying points.
+    '''
+    data_to_plot = data.copy()
+    if scale_limits:
+        #taking only the data within the specified limits
+        data_to_plot[column_name] = data[column_name][(data[column_name] > scale_limits[0]) & (data[column_name] < scale_limits[1])]
+
+    number_of_subplots = len(plots)
+    plt.figure(figsize = figsize)
+    sns.set_style('whitegrid')
+
+    for i, ele in enumerate(plots):
+        plt.subplot(1, number_of_subplots, i + 1)
+        plt.subplots_adjust(wspace=0.25)
+
+        if ele == 'distplot':
+            sns.distplot(data_to_plot[column_name][data['TARGET'] == 0].dropna(),
+                         label='Non-Defaulters', hist = False, color='#eb0524')
+            sns.distplot(data_to_plot[column_name][data['TARGET'] == 1].dropna(),
+                         label='Defaulters', hist = False, color='black')
+            plt.xlabel(column_name)
+            plt.ylabel('Probability Density')
+            plt.legend(fontsize='medium')
+            plt.title("Dist-Plot of {}".format(column_name))
+            if log_scale:
+                plt.xscale('log')
+                plt.xlabel(f'{column_name} (log scale)')
+
+        if ele == 'box':
+            sns.boxplot(x='TARGET', y=column_name, data=data_to_plot, palette = ['#eb0524', 'black'],\
+                        medianprops=dict(color="white", alpha=0.7))
+            plt.title("Box-Plot of {}".format(column_name))
+            if log_scale:
+                plt.yscale('log')
+                plt.ylabel(f'{column_name} (log Scale)')
+
+        if ele == 'countplot':
+            sns.countplot(data_to_plot[column_name],hue=data_to_plot['TARGET'])
+#             ax.set_xticklabels(ax.get_xticklabels(), rotation= 60)
+#             plt.show()
+
+    plt.show()
