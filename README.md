@@ -30,9 +30,10 @@ We are Group 2 and our team members:
 
 **HOW TO USE THIS REPO**
 1. Clone this repo to your local, change all the path in the repo to your path.
-2. Read the EDA folder to understand the data
-3. Run script `main.py` in the `preprocessing` folder and save the final data.
-4. Run script `fit_model.py` in the `modeling` folder to create the final predictions.
+2. Run `pip install -r requirements.txt` in your terminal to install all the neccessary packages.
+4. Read the EDA folder to understand the data
+5. Run script `main.py` in the `preprocessing` folder and save the final data.
+6. Run script `fit_model.py` in the `modeling` folder to create the final predictions.
 
 **REFERENCES**
 - https://www.kaggle.com/competitions/home-credit-default-risk/discussion/64821
