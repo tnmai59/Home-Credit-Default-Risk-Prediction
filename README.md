@@ -36,6 +36,7 @@ We are Group 2 and our team members:
 6. Run script `fit_model.py` in the `modeling` folder to create the final predictions.
 
 **OUR TUNING PROCESS AND SUBMISSION NOTES**
+
 Links: https://docs.google.com/document/d/1Nr2gFmvokbsIXAH6ziHggAu3XQm5izBkaIGwYUk4gAU/edit
 
 **REFERENCES**
