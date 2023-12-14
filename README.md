@@ -23,6 +23,16 @@ We are Group 2 and our team members:
     - Support feature engineering bureau
     - Slide
 
+**PROJECT FOLDER STRUCTURE**
+- `EDA`: Folder includes exploratory analysis of all tables
+- `preprocessing`: Folder includes all feature engineering and data cleanning for all the tables
+- `modeling`: Folders includes code of feature selection and and modeling.
+
+**HOW TO USE THIS REPO**
+1. Read the EDA folder to understand the data
+2. Run script `main.py` in the `preprocessing` folder and save the final data table in your computer.
+3. Run script 'fit_model.py' in the 'modeling' folder to create the final predictions.
+
 **REFERENCES**
 - https://www.kaggle.com/competitions/home-credit-default-risk/discussion/64821
 - https://www.kaggle.com/c/home-credit-default-risk/discussion/58332
