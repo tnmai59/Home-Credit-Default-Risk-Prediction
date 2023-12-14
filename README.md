@@ -21,4 +21,13 @@ We are Group 2 and our team members:
     - EDA bureau and bureau_balance
     - Support feature engineering bureau
     - Slide
-    
+
+- References:
+  - https://www.kaggle.com/competitions/home-credit-default-risk/discussion/64821
+  - https://www.kaggle.com/c/home-credit-default-risk/discussion/58332
+  - https://www.kaggle.com/code/willkoehrsen/start-here-a-gentle-introduction
+  - https://www.kaggle.com/code/jsaguiar/lightgbm-with-simple-features
+  - https://www.kaggle.com/code/hikmetsezen/blend-boosting-for-home-credit-default-risk
+  - https://github.com/yakupkaplan/Home-Credit-Default-Risk
+  - https://www.kaggle.com/code/codename007/home-credit-complete-eda-feature-importance
+  - https://www.kaggle.com/code/shaz13/magic-of-weighted-average-rank-0-80/script
