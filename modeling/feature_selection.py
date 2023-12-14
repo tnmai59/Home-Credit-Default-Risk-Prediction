@@ -40,3 +40,4 @@ def feature_importance(X_train, y_train):
     # Return a list of features with zero importance, which would be dropped from the final data frame.
     zero_features = list(feature_importances[feature_importances['importance'] == 0.0]['feature'])
     return zero_features
+
