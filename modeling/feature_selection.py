@@ -35,7 +35,8 @@ def feature_importance(X_train, y_train):
 
     # The final feature importance scores is the average of scores of 2 training rounds
     feature_importances /= 2
-    feature_importances = pd.DataFrame({'feature': list(X_train.columns), 'importance': feature_importances}).sort_values('importance', ascending=False)
+    feature_importances = pd.DataFrame({'feature': list(X_train.columns), 'importance': feature_importances}).sort_values('importance', 
+                                                                                                                          ascending=False)
     # Return a list of features with zero importance, which would be dropped from the final data frame.
     zero_features = list(feature_importances[feature_importances['importance'] == 0.0]['feature'])
     return zero_features

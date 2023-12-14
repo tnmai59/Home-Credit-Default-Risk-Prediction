@@ -75,7 +75,6 @@ def handling_outliers_3sigma(col, dataset, dataset_apl):
     print('Percentage of high: {:.2f}{}'.format(100 * n_high / n, '%'))
     print('Low value: {:.2f}'.format(low))
     print('High value: {:.2f}'.format(high))
-
     # Return the list of values after handling outliers
     return xnew
 

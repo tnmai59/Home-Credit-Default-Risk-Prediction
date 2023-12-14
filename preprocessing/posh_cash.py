@@ -7,9 +7,10 @@ def pos_cash_pipeline(path, num_rows= None):
     """
 
     pos = pd.read_csv(os.path.join(path, 'dseb63_POS_CASH_balance.csv'), nrows= num_rows)
-    #computing Exponential Moving Average for some features based on MONTHS_BALANCE  --- BỔ SUNG
+    #computing Exponential Moving Average for some features   --- BỔ SUNG
     columns_for_ema = ['CNT_INSTALMENT', 'CNT_INSTALMENT_FUTURE']
     exp_columns = ['EXP_'+ele for ele in columns_for_ema]
+    # Applies the EMA calculation to each group independently, using an alpha (smoothing factor) of 0.6.
     pos[exp_columns] = pos.groupby('SK_ID_PREV')[columns_for_ema].transform(lambda x: x.ewm(alpha = 0.6).mean())
     #-------------------------------------------------
 
@@ -29,6 +30,7 @@ def pos_cash_pipeline(path, num_rows= None):
     df = pd.DataFrame()
     df['SK_ID_CURR'] = gp['SK_ID_CURR'].first()
     df['MONTHS_BALANCE_MAX'] = gp['MONTHS_BALANCE'].max()
+    
     # Percentage of previous loans completed and completed before initial term
     df['POS_LOAN_COMPLETED_MEAN'] = gp['NAME_CONTRACT_STATUS_Completed'].mean()
     df['POS_COMPLETED_BEFORE_MEAN'] = gp['CNT_INSTALMENT'].first() - gp['CNT_INSTALMENT'].last()

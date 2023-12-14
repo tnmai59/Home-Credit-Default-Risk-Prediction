@@ -42,8 +42,7 @@ def previous_applications_pipeline(path, num_rows= None):
     #---------------BỔ SUNG-----------------------------------------------------------------
     prev['AMT_INTEREST'] = prev['CNT_PAYMENT'] * prev[
                                                 'AMT_ANNUITY'] - prev['AMT_CREDIT']
-    prev['INTEREST_SHARE'] = prev['AMT_INTEREST'] / (prev[
-                                                                                                'AMT_CREDIT'] + 0.00001)
+    prev['INTEREST_SHARE'] = prev['AMT_INTEREST'] / (prev['AMT_CREDIT'] + 0.00001)
     prev['INTEREST_RATE'] = 2 * 12 * prev['AMT_INTEREST'] / (prev[
                                             'AMT_CREDIT'] * (prev['CNT_PAYMENT'] + 1))
     #--------------------------------------------------------------------------------------
