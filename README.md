@@ -29,9 +29,10 @@ We are Group 2 and our team members:
 - `modeling`: Folders includes code of feature selection and and modeling.
 
 **HOW TO USE THIS REPO**
-1. Read the EDA folder to understand the data
-2. Run script `main.py` in the `preprocessing` folder and save the final data table in your computer.
-3. Run script 'fit_model.py' in the 'modeling' folder to create the final predictions.
+1. Clone this repo to your local, change all the path in the repo to your path.
+2. Read the EDA folder to understand the data
+3. Run script `main.py` in the `preprocessing` folder and save the final data.
+4. Run script `fit_model.py` in the `modeling` folder to create the final predictions.
 
 **REFERENCES**
 - https://www.kaggle.com/competitions/home-credit-default-risk/discussion/64821
