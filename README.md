@@ -4,7 +4,7 @@ We are Group 2 and our team members:
 
 - Thieu Ngoc Mai:
     - EDA previous_application and POS_Cash_balance
-    - Feature engineering and modeling
+    - Feature engineering, preprocessing and modeling
     - Refactoring other members code and creating final repo
 
 - Tran Phuong Anh:
