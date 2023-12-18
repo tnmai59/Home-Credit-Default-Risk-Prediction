@@ -37,7 +37,7 @@ We are Group 2 and our team members:
 
 **OUR TUNING PROCESS AND SUBMISSION NOTES**
 
-Links: https://docs.google.com/document/d/1Nr2gFmvokbsIXAH6ziHggAu3XQm5izBkaIGwYUk4gAU/edit
+Links: [https://docs.google.com/document/d/1Nr2gFmvokbsIXAH6ziHggAu3XQm5izBkaIGwYUk4gAU/edit](https://github.com/tnmai59/Data-Preparation-Final-Project-Group-2/blob/main/report/Note%20submission.pdf)
 
 **REFERENCES**
 - https://www.kaggle.com/competitions/home-credit-default-risk/discussion/64821
