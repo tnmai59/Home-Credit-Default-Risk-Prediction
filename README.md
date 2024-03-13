@@ -3,7 +3,7 @@ This is our final project for Data Preparation course at NEU
 We are Group 2 and our team members:
 
 **RESPONSIBILITIES**
-- Thieu Ngoc Mai:
+- Thieu Ngoc Mai (Leader):
     - EDA previous_application and POS_Cash_balance
     - Feature engineering, preprocessing and modeling
     - Refactoring other members code and creating final repo
